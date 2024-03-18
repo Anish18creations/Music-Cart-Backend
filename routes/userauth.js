@@ -8,18 +8,26 @@ router.post("/signup" , async(req,res) => {
     try{
         const { name , mobile , email , password} = req.body;
 
-        const isexistinguser1 = await User.findOne({email:email});
+        const isexistinguser1 = await User.findOne({mobile:mobile});
+        const isexistinguser2 = await User.findOne({email:email});
+
+        if(isexistinguser1 && isexistinguser2){
+            res.json({
+                message : "User already exists with the given mobile number and email address!!" ,
+                success : "false"
+            })
+        }
+
         if(isexistinguser1) {
              res.json({
-               message : "User already exists with the given email address!!" ,
+               message : "User already exists with the given mobile number!!" ,
                success : "false"
             })
         }
 
-        const isexistinguser2 = await User.findOne({mobile:mobile});
         if(isexistinguser2) {
              res.json({
-               message : "User already exists with the given mobile number!!" ,
+               message : "User already exists with the given email address!!" ,
                success : "false"
             })
         }
