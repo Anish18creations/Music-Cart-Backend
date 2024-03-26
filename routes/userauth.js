@@ -38,7 +38,7 @@ router.post("/signup", async (req, res) => {
             name,
             mobile,
             email,
-            password: hashedPassword
+            password: hashedPassword,
         })
 
         const userRes = await userData.save();
@@ -107,6 +107,24 @@ router.post("/login", async (req, res) => {
     }
     catch (error) {
         console.log(error);
+    }
+})
+
+router.post("/addfeedback", async (req, res) => {
+    try {
+        const { id, feedbacktype, feedbackcontent } = req.body;
+        const response = await User.findById({ _id: id });
+        const add = { feedbacktype, feedbackcontent };
+        response.feedback.push(add);
+
+        await response.save();
+        res.json({
+            message: "Thank you for the feedback!!",
+            success: "true"
+        });
+    }
+    catch (err) {
+        console.log(err);
     }
 })
 
